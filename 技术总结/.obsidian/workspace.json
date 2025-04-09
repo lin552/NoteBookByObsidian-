@@ -1,0 +1,234 @@
+{
+  "main": {
+    "id": "4edff106455c573a",
+    "type": "split",
+    "children": [
+      {
+        "id": "938eb3ed66bd280c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "56a9710fa6d9466d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Android/Framework/Binder机制.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Binder机制"
+            }
+          },
+          {
+            "id": "04f9fe7f018ba029",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Java/Java集合框架/ArrayList  和  LinkedList.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ArrayList  和  LinkedList"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "93000c2e17253229",
+    "type": "split",
+    "children": [
+      {
+        "id": "16772d55ed47a19f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "aa20b0c13c993526",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "16d00bced336aca7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:Basci-Types",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "32494136045d8921",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "c9f95476440dd08e",
+    "type": "split",
+    "children": [
+      {
+        "id": "8981c324cb0ef3f7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5b617b8c22c265ea",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Java/【Java】ArrayList  vs  LinkedList 对比.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "【Java】ArrayList  vs  LinkedList 对比 的反向链接列表"
+            }
+          },
+          {
+            "id": "7f0f292a20184f9b",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Java/【Java】ArrayList  vs  LinkedList 对比.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "【Java】ArrayList  vs  LinkedList 对比 的出链列表"
+            }
+          },
+          {
+            "id": "62798bc384ba9db0",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "fe65fae067aa34c9",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Android/Framework/Binder机制.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Binder机制 的大纲"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "56a9710fa6d9466d",
+  "lastOpenFiles": [
+    "Android/Framework/Bitmap内容.md",
+    "Android/Framework/Context.md",
+    "Android/Framework/IPC 跨进程通信.md",
+    "Android/Framework/SharePreference.md",
+    "Android/UI/Activity 中管理 Fragment.md",
+    "Android/UI/Activity 生命周期&启动模式.md",
+    "Android/Framework/View事件传递机制.md",
+    "Android/Framework/Binder机制.md",
+    "Android/优秀库/ViewModle.md",
+    "Android/优秀库/ViewBinding.md",
+    "Android/优秀库/RxJava.md",
+    "Android/优秀库/Room 使用.md",
+    "Android/优秀库/MMKV.md",
+    "Android/优秀库/LiveData.md",
+    "Android/View组件/RecyclerView 缓存策略和优化思路.md",
+    "Android/Framework/Handler机制.md",
+    "Java/Java基础/Java 四大引用（强软弱虚）.md",
+    "Java/Java集合框架/ArrayList  和  LinkedList.md",
+    "Android/优秀库/EventBus 和 RxBus.md",
+    "Android/优秀库/Glide 图片加载框架.md",
+    "Android/优秀库/LeakCanary 内存泄露分析.md",
+    "Android/View组件/Webview.md",
+    "Android/View组件/NestedScrollView.md",
+    "Android/View组件/自定义View & ViewGrounp.md",
+    "Android/View组件/协调布局.md",
+    "Android/View组件/约束布局.md",
+    "Pasted image 20250324100501.png",
+    "Java/Java数据结构",
+    "Pasted image 20250324081654.png",
+    "Android/集合",
+    "Android/UI",
+    "Java/Java基础",
+    "Android/新版本特性",
+    "Pasted image 20250323202548.png",
+    "Pasted image 20250323205100.png",
+    "Pasted image 20250323175933.png",
+    "Pasted image 20250323134155.png",
+    "Pasted image 20250314221126.png",
+    "Pasted image 20250314221112.png",
+    "Pasted image 20250314221106.png",
+    "Pasted image 20250314220723.png",
+    "Android/多线程",
+    "Java/Java集合框架",
+    "面试准备",
+    "Java/JVM",
+    "Java/多线程/业务场景实现"
+  ]
+}
