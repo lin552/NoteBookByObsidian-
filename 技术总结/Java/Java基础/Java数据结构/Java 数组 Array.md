@@ -76,6 +76,15 @@ int[] newArr = Arrays.copyOf(arr,arr.length);
 System.arraycopy(src,0,dest,0,dest.length);
 ```
 
+###### Arrays常用方法
+
+|方法|适用场景|特点说明|
+|---|---|---|
+|`Arrays.fill()`|初始化数组默认值或重置数组内容|高效，支持范围填充|
+|`Arrays.copyOf()`|快速复制数组并调整长度|底层调用 `System.arraycopy`|
+|`System.arraycopy`|高性能数组复制（需手动处理索引和长度）|原生方法，速度最快|
+|`Arrays.sort()`|对数组进行排序|支持自定义比较器|
+
 ###### 总结
  * 深拷贝还是浅拷贝  ？
  

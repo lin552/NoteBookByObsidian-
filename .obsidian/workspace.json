@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "技术总结/Android/View组件/NestedScrollView.md",
+                "file": "技术总结/Java/Java基础/Java基础类型.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "NestedScrollView"
+              "title": "Java基础类型"
             }
           },
           {
@@ -27,43 +27,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "技术总结/算法/常见数据结构.md",
+                "file": "技术总结/template/笔记属性.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "常见数据结构"
-            }
-          },
-          {
-            "id": "f791ca5a8c4fa8ea",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "技术总结/Java/Java集合框架/ArrayList  和  LinkedList.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "ArrayList  和  LinkedList"
-            }
-          },
-          {
-            "id": "f0757a91a08f315f",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "技术总结/Java/Java基础/Java基础类型.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Java基础类型"
+              "title": "笔记属性"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -95,7 +68,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:ArryList",
+                "query": "tag:#String  ",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -182,13 +155,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "技术总结/Android/View组件/NestedScrollView.md",
+                "file": "技术总结/template/笔记属性.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "NestedScrollView 的大纲"
+              "title": "笔记属性 的大纲"
             }
           }
         ],
@@ -208,14 +181,38 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "8b6a7006af2de12f",
+  "active": "531530b2b9f98512",
   "lastOpenFiles": [
+    "技术总结/Pasted image 20250324100501.png",
+    "技术总结/Pasted image 20250324081654.png",
+    "技术总结/Pasted image 20250323202548.png",
+    "技术总结/Pasted image 20250323205100.png",
+    "技术总结/Pasted image 20250323175933.png",
+    "技术总结/Pasted image 20250323134155.png",
+    "技术总结/Pasted image 20250314221126.png",
+    "技术总结/Pasted image 20250314221106.png",
+    "技术总结/Pasted image 20250314220723.png",
+    "技术总结/算法/常见数据结构.md",
+    "[技术总结/Java/Java基础/Java数据结构/Java 数组 Array.md",
+    "[技术总结/Java/Java基础/Java数据结构",
+    "[技术总结/Java/Java基础",
+    "[技术总结/Java",
+    "[技术总结",
+    "Java 数组 Array.md",
+    "技术总结/Java/Java基础/Java数据结构/Java 数组 Array.md",
+    "技术总结/Java/Java集合框架/ArrayList  和  LinkedList.md",
+    "技术总结/Java/Java基础/Java ==操作符 和 equals().md",
+    "技术总结/Java/Java基础/Java基础类型.md",
+    "技术总结/Java/Java基础/Java数据结构/Java 字符串 String.md",
+    "技术总结/算法/常见算法考察/无重复字符串的最长子串.md",
+    "技术总结/Java/Java基础/Java String.md",
+    "技术总结/Java/Java基础/Java基础.md",
+    "技术总结/Android/View组件/NestedScrollView.md",
     "技术总结/Android/View组件/※ 自定义View & ViewGrounp.md",
     "技术总结/Android/View组件/约束布局.md",
     "技术总结/Android/View组件/※ RecyclerView 缓存策略和优化思路.md",
     "技术总结/Android/View组件/Webview.md",
     "技术总结/Android/View组件/协调布局.md",
-    "技术总结/Android/View组件/NestedScrollView.md",
     "技术总结/Android/UI/Activity 生命周期&启动模式.md",
     "技术总结/Android/UI/Activity 中管理 Fragment.md",
     "技术总结/Android/Framework/SharePreference.md",
@@ -224,18 +221,6 @@
     "技术总结/Android/Framework/Bitmap内容.md",
     "技术总结/Android/Framework/Handler机制.md",
     "技术总结/Android/Framework/View事件传递机制.md",
-    "技术总结/Android/优秀库/Glide 图片加载框架.md",
-    "技术总结/Android/优秀库/LiveData.md",
-    "技术总结/Android/优秀库/ViewModle.md",
-    "技术总结/Android/优秀库/Compose UI.md",
-    "技术总结/Android/优秀库/LeakCanary 内存泄露分析.md",
-    "技术总结/Android/优秀库/MMKV.md",
-    "技术总结/Android/优秀库/RxJava.md",
-    "技术总结/Android/业务经验/业务实践View篇.md",
-    "技术总结/Android/业务经验/各厂商PUSH.md",
-    "技术总结/Android/业务经验/定时更新UI的实现方法.md",
-    "技术总结/Android/性能优化/Android Studio Profiler 使用.md",
-    "技术总结/Android/性能优化/性能优化思路.md",
     "技术总结/算法/常见算法考察/array",
     "技术总结/Java/Java基础/Java数据结构",
     "技术总结/算法/数据结构"
