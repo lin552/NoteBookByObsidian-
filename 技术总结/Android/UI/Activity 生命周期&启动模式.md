@@ -1,5 +1,5 @@
 ---
-创建时间: 2025-03-14T18:39:00
+创建时间: 2025-04-12 17:24:57
 作者: wangxiaoming
 tags:
   - Activity
@@ -125,18 +125,18 @@ private Activity performLaunchActivity(ActivityClientRecord r, Intent customInte
 - 使用`ViewModel`+`onSaveInstanceState`分离临时数据与持久化数据
 
 #### 二、Activity启动模式
-##### 1)standard(默认)
+##### 1)`standard`(默认)
 特性：每次启动均创建新实例，栈中允许多个相同Activity
 适用场景：适用于独立页面（如新闻详情页）
 
-##### 2)singleTop(栈顶复用)
-特性：若目标Activity已在栈顶，则复用实例并调用 onNewIntent(),否则创建新实例
+##### 2)`singleTop`(栈顶复用)
+特性：若目标Activity已在栈顶，则复用实例并调用 `onNewIntent()`,否则创建新实例
 适用场景：适用于避免重复打开同意页面（如消息通知页）
 
-##### 3）singleTask (栈内复用)
-特性：保证整个任务栈中仅存在一个实例，若已存在，则清楚其上的所有Activity并调用 onNewIntent().
+##### 3）`singleTask` (栈内复用)
+特性：保证整个任务栈中仅存在一个实例，若已存在，则清楚其上的所有Activity并调用 `onNewIntent()`.
 适用场景：适用于应用入口 (如主页)
 
-##### 4）singleInstance （全局唯一）
+##### 4）`singleInstance` （全局唯一）
 特性：为Activity分配独立任务栈，且栈内仅此实例。
 适用场景：适用于需独立运行的场景（如分享弹窗、视频通话页面）

@@ -1,5 +1,5 @@
 ---
-创建时间: 2025-03-14T18:39:00
+创建时间: 2025-04-12 17:24:57
 作者: wangxiaoming
 tags:
   - Android
@@ -8,9 +8,9 @@ tags:
 #### 一、Fragment生命周期
 ![[Pasted image 20250324100501.png]]
 #### 二、Activity管理Fragment的核心方式
-##### 1)FragmentManager 与 FragmentTransaction
-- ​**FragmentManager**：通过 `getSupportFragmentManager()` 获取，负责 Fragment 的 ​**事务管理** 和 ​**状态跟踪**
-- ​**FragmentTransaction**：用于执行具体操作：
+##### 1)`FragmentManager` 与 `FragmentTransaction`
+- ​`FragmentManager`：通过 `getSupportFragmentManager()` 获取，负责 Fragment 的 ​**事务管理** 和 ​**状态跟踪**
+- ​`FragmentTransaction`：用于执行具体操作：
 ```java
 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 transaction.add(R.id.container, new MyFragment(), "TAG"); // 添加
@@ -31,8 +31,8 @@ transaction.addToBackStack("detail_page"); // 命名事务
 transaction.commit();
 ```
 ##### 3)Fragment状态恢复
-- ​**Bundle 保存**：在 `onSaveInstanceState()` 中保存关键数据，通过 `getArguments()` 在 `onCreate()` 中恢复
-- ​**ViewModel**：跨配置变更（如屏幕旋转）保留数据，实现 Fragment 间共享状态
+- ​`Bundle` 保存：在 `onSaveInstanceState()` 中保存关键数据，通过 `getArguments()` 在 `onCreate()` 中恢复
+- ​`ViewModel`：跨配置变更（如屏幕旋转）保留数据，实现 Fragment 间共享状态
 
 #### 三、通信机制 Activity 与 Fragment 交互
 ##### 1）接口回调
@@ -51,7 +51,6 @@ public void onAttach(Context context) {
 }
 ```
 Activity 通过回调方法接收数据
-
 ##### 2）Fragment Result API
 使用 `setFragmentResult()` 和 `setFragmentResultListener()` 传递一次性数据，避免直接耦合
 ```kotlin
@@ -63,7 +62,6 @@ childFragmentManager.setFragmentResultListener("requestKey") { key, bundle ->
     val data = bundle.getString("data")
 }
 ```
-
-##### 3)ViewModel共享数据
+##### 3)`ViewModel`共享数据
 通过 `ViewModelProvider(activity).get(SharedViewModel::class.java)` 实现跨 Fragment 数据同步
 

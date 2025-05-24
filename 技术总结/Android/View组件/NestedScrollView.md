@@ -1,2 +1,0 @@
-和ScrollView 对比
-为何推荐使用NestedScrollView
