@@ -5,78 +5,81 @@ tags:
   - Fresco
   - 图片框架
 ---
-#### 一、Fresco概述
-- ​**定义**​：  
-    Fresco 是 Facebook 开源的 ​**Android 图片加载框架**，专注于高效内存管理、动态缩放和复杂图片格式支持（如 `GIF、WebP`）。
-- ​**核心优势**​：
-    - ​**内存优化**​：
-        - ​**5.0 以下系统**​：使用 `Ashmem` 匿名共享内存存储 Bitmap，避免触发 `GC`，减少 `OOM` 风险。
-        - ​**5.0 以上系统**​：Bitmap 存储于 Java Heap，结合三级缓存（两级内存 + 磁盘缓存）提升性能
-    - ​**灵活的图片处理**​：支持缩放（`centerCrop`、`fitCenter`）、圆角、圆形裁剪、渐进式加载等
-    - ​**多格式支持**​：原生支持 `GIF` 动图、`WebP` 格式（静态/动态），减少 `APK` 体积
-    - ​**生命周期管理**​：自动释放不可见图片资源，避免内存泄漏。
+#### 一、核心机制与基础使用
+1. ​**组件架构**​
+    - ​`Drawee`​：负责图片显示与状态管理（如占位图、错误图），通过 `SimpleDraweeView` 实现。
+    - ​`ImagePipeline`​：管理图片加载流程，包括网络请求、解码、缓存等核心逻辑。
+    - ​`Cache`​：三级缓存体系（内存缓存、编码缓存、磁盘缓存），优化加载效率
+2. ​**基础API**​
+    ```java
+    // 加载网络图片
+    Fresco.initialize(context);
+    SimpleDraweeView draweeView = findViewById(R.id.my_image_view);
+    draweeView.setImageURI("https://example.com/image.jpg");
+    ```
+    - ​**占位图与错误图**​：通过 `setPlaceholderImage()` 和 `setErrorImage()` 设置。
+#### 二、内存管理与优化
+1. ​`Ashmem` 匿名共享内存**​
+    - ​**原理**​：将 Bitmap 存储在 Android 系统管理的 `Ashmem` 区域，避免 Java 堆内存溢出（`OOM`）
+    - ​**优势**​：减少 `GC` 压力，支持低内存设备流畅运行。
+2. ​**内存缓存策略**​
+    - ​`LruMemoryCache`​：基于 `LRU` 算法管理解码后的 Bitmap，通过 `MemoryCacheParams` 配置最大容量和淘汰策略
+    - ​**编码缓存**​：存储未解码的原始数据（如字节流），避免重复下载
+3. ​**内存优化技巧**​
+    - ​**按需缩放**​：通过 `ResizeOptions` 调整图片尺寸，减少内存占用
+    - ​**复用 Bitmap**​：利用 `CloseableReference` 管理生命周期，防止内存泄漏。
+#### 三、缓存机制与配置
+1. ​**三级缓存结构**
 
-#### 二、核心功能与使用
-##### 1）基本用法
-todo
+| ​**缓存层**​  | ​**存储内容**​          | ​**特点**​        |
+| ---------- | ------------------- | --------------- |
+| ​**内存缓存**​ | Bitmap、EncodedImage | 快速访问，LRU 淘汰策略   |
+| ​**编码缓存**​ | 原始图片数据（字节流）         | 避免重复解码          |
+| ​**磁盘缓存**​ | 压缩后的图片文件            | 持久化存储，支持小图/大图分离 |
 
-##### 2）高级功能
-todo
+2. ​**磁盘缓存配置**​
+    ```java
+    DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(context)
+        .setMaxCacheSize(100 * 1024 * 1024) // 100MB
+        .build();
+    ImagePipelineConfig config = ImagePipelineConfig.newBuilder(context)
+        .setMainDiskCacheConfig(diskCacheConfig)
+        .build();
+    Fresco.initialize(context, config);
+    ```
 
-#### 三、原理与机制
-##### 1）内存管理
-- ​**双内存缓存**​：
-    - ​**Bitmap 内存缓存**​：存储解码后的图片（`BitmapMemoryCache`）。
-    - ​**未解码内存缓存**​：存储原始图片数据（`RawMemoryCache`），减少解码开销
-- ​**磁盘缓存**​：默认存储原始图片，支持自定义策略（如 `DiskCacheConfig`）。
-##### 2）图片加载流程
-1. **请求解析**​：根据 `URI` 和注解生成 `ImageRequest`。
-2. ​**数据获取**​：从网络、磁盘或内存缓存读取数据。
-3. ​**解码与处理**​：按需缩放、解码为 Bitmap，应用变换（如圆角）。
-4. ​**渲染显示**​：通过 `DraweeHierarchy` 将图片绘制到 `DraweeView`。
+#### 四、图片加载流程解析
+1. ​**Producer 链式处理**​
+    - ​**流程**​：`NetworkFetcher` → `DecodeProducer` → `ResizeProducer` → `PostprocessorProducer`。
+    - ​**异步解码**​：在后台线程完成图片解码，避免阻塞 `UI`
+2. ​**渐进式加载**​
+    - ​**支持格式**​：JPEG、`WebP`。
+    - ​**实现**​：`ProgressiveJpegDecoder` 分阶段解析数据，逐步显示图片
 
-##### 3）关键组件
-- ​`DraweeView`：图片显示载体，继承自 `ImageView`，支持复杂状态切换（占位图→加载中→成功图）。
-- ​`Controller`​：管理加载流程，处理重试、进度条等逻辑。
-- ​`Producer`​：负责数据获取（如网络请求、磁盘读取）。
+#### 五、动态图与高级特性
+1. ​`GIF/WebP` 动画支持**​
+    - ​`AnimatedDrawable`**​：通过 `AnimatedDrawable2` 实现帧动画控制。
+    - ​**内存优化**​：自动回收无效帧，减少资源占用
+2. ​**自定义扩展**​
+    - ​**自定义 Producer**​：扩展网络请求或数据处理逻辑。
+    - ​**自定义 `Postprocessor`​：添加滤镜、裁剪等后处理效果
 
-#### 四、优化策略
-##### 1）性能优化
-- ​**图片采样率**​：通过 `ResizeOptions` 缩小图片尺寸，减少内存占用。
-```kotlin
-val request = ImageRequestBuilder.newBuilderWithSource(uri)
-   .setResizeOptions(ResizeOptions(500,500))
-   .build()
-```
-- `WebP`转换：使用工具（如智图）将图片转为`WebP`,降低体积
-##### 2）内存优化
-- ​**禁用未使用功能**​：如关闭 GIF 自动播放以减少内存。
-- ​**自定义内存策略**​：调整 `MemoryCacheParams` 控制缓存大小。
-##### 3）弱网处理
-- **超时设置**​：通过 `OkHttpClient` 配置网络超时。
-- ​**重试机制**​：结合拦截器实现自动重试。
-#### 五、优缺点分析
-| **优点**​          | ​**缺点**​              |
-| ---------------- | --------------------- |
-| 高效内存管理，减少 OOM 风险 | APK 体积增加（约 1.5-2MB）   |
-| 支持复杂图片处理（圆角、GIF） | 不支持 `wrap_content` 宽高 |
-| 渐进式加载提升用户体验      | 学习成本较高（需熟悉 Drawee 体系） |
-#### 六、适用场景
-1. ​**大图加载**​：如电商商品图、高清头像。
-2. ​**动态内容**​：GIF 动图、视频封面。
-3. ​**低端设备优化**​：减少内存占用，适配低端机型。
-4. ​**复杂 `UI` 需求**​：圆角、叠加图、自定义占位符。
-
-#### 七、对比其他框架
-|**框架**​|​**优势**​|​**劣势**​|
-|---|---|---|
-|Fresco|内存管理强，支持 GIF/WebP|体积大，配置复杂|
-|Glide|轻量级，API 简洁|不支持渐进式加载|
-|Picasso|链式调用简单|不支持 GIF，内存优化较弱|
-#### 八、面试考察点
-1. ​**Fresco 的内存管理机制？​**​
-    - 答：5.0 以下使用 `Ashmem`，5.0 以上结合两级内存缓存 + 磁盘缓存。
-2. ​**如何实现圆角图片？​**​
-    - 答：XML 配置 `roundedCornerRadius` 或代码设置 `RoundingParams`。
-3. ​**Fresco 如何处理大图加载？​**​
-    - 答：通过 `ResizeOptions` 缩放尺寸，结合 `Downsampling` 降低采样率。
+#### 六、性能优化与实战技巧
+1. **避免内存泄漏**​
+    - ​**及时释放资源**​：在 `onDestroy()` 中调用 `controller.unbindDraweeHierarchy()`。
+    - ​**弱引用管理**​：使用 `WeakReference` 弱引用 View，防止持有导致泄漏。
+2. ​**网络优化**​
+    - ​**HTTP/2 支持**​：启用多路复用，减少请求延迟。
+    - ​**重试策略**​：配置网络请求重试次数与超时时间。
+3. ​**对比 Glide**​
+    - ​**优势**​：Fresco 内存管理更优（`Ashmem`）、支持渐进式加载。
+    - ​**劣势**​：体积较大，配置复杂度高。
+#### 七、高频面试题
+1. ​**Fresco 如何解决 `OOM` 问题？​**​
+    - 通过 `Ashmem` 存储 Bitmap，结合 `LRU` 缓存策略控制内存占用
+2. ​**Fresco 的三级缓存如何工作？​**​
+    - 优先从内存缓存读取，未命中则查询编码缓存，最后访问磁盘缓存
+3. ​**如何实现图片的渐进式加载？​**​
+    - 使用 `ProgressiveJpegDecoder` 分阶段解码，逐步渲染到`UI`
+4. ​**Fresco 与 Glide 的区别？​**​
+    - Fresco 内存管理更高效，支持动态图；Glide 更轻量，集成更简单。

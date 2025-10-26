@@ -16,7 +16,7 @@ tags:
 - ​**Application Context**​：与整个应用进程绑定，生命周期最长。
 - ​**Activity Context**​：与 `Activity` 生命周期一致，`UI` 操作需依赖此类型。
 - ​**Service Context**​：与 `Service` 生命周期一致，适用于后台任务。
-- ​**`BroadcastReceiver Context`**​：仅在广播接收期间存在，不可用于 `UI` 操作
+- ​`BroadcastReceiver Context`**​：仅在广播接收期间存在，不可用于 `UI` 操作
 #### 三、Context的类型与区别
 |**类型**​|​**生命周期**​|​**适用场景**​|​**限制**​|
 |---|---|---|---|

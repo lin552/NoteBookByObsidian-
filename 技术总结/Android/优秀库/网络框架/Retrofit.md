@@ -6,71 +6,98 @@ tags:
   - Android
   - 网络
 ---
-#### 一、Retrofit 概述
-- ​**定义**​：  
-    Retrofit 是 Square 公司开源的 ​**类型安全 HTTP 客户端**，专注于简化 Android/Java 应用中的 `RESTful API` 请求，通过注解将接口定义映射为 HTTP 请求。
-- ​**核心优势**​：
-    - ​**类型安全**​：接口方法返回值直接映射为 Java 对象（如 `JSON` 转实体类）。
-    - ​**解耦**​：接口与实现分离，代码更清晰。
-    - ​**高效扩展**​：支持自定义转换器、拦截器、适配器。
-    - ​**生命周期集成**​：自动绑定 `OkHttp` 的线程管理，避免内存泄漏。
+#### 一、核心机制与设计思想
+1. ​**动态代理与接口映射**​
+    - ​**动态代理**​：Retrofit 通过 `JDK`动态代理（`Proxy.newProxyInstance`）生成接口的代理类，拦截方法调用并转换为 HTTP 请求。核心类 `ServiceMethod` 负责解析接口方法的注解，生成对应的 `Call` 对象
+    - ​**适配器模式**​：通过 `CallAdapter.Factory` 将原始 `Call` 转换为其他形式（如 `RxJava` 的 `Observable` 或 Kotlin 协程的 `Deferred`）
+    
+2. ​**转换器（Converter）​**​
+    - ​**作用**​：将请求参数序列化为 `JSON/XML` 等格式，或将响应体反序列化为 Java 对象。
+    - ​**常用实现**​：`GsonConverterFactory`（`JSON`）、`MoshiConverterFactory`（`Moshi`）、`ScalarsConverterFactory`（字符串）
 
-#### 二、核心功能与使用
-##### 1）基本用法
-todo
+3. ​`OkHttp` 集成**​
+    - 底层默认使用 `OkHttp` 作为网络传输层，支持连接池、缓存、拦截器等特性。
+    - 可通过 `callFactory` 替换为自定义的 HTTP 客户端（如 `OkHttp` 或自定义实现）
 
-##### 2）高级功能
-todo
+#### 二、核心组件与使用
+1. ​**Retrofit 实例构建**​
+```java
+Retrofit retrofit = new Retrofit.Builder()
+    .baseUrl("https://api.example.com/")  // 基础 URL
+    .addConverterFactory(GsonConverterFactory.create())  // 转换器
+    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())  // 适配器
+    .client(okHttpClient)  // 自定义 OkHttp 客户端
+    .build();
+```
+1. ​**接口定义与注解**​
+    - ​**请求方法注解**​：`@GET`、`@POST`、`@PUT`、`@PATCH`、`@DELETE`。
+    - ​**参数注解**​：
+        - `@Path`：动态替换 URL 路径参数（如 `/users/{id}` → `id="123"`）。
+        - `@Query`：添加查询参数（如 `?name=John`）。
+        - `@Body`：发送 `JSON` 等数据体（需配合转换器）。
+        - `@Header`：添加请求头。
+    - ​**标记注解**​：`@FormUrlEncoded`（表单提交）、`@Multipart`（文件上传）
+2. ​**请求执行**​
+    - ​**同步请求**​：`call.execute()`（阻塞当前线程）。
+    - ​**异步请求**​：`call.enqueue(Callback)`（非阻塞，回调在后台线程）。
 
-#### 三、原理与机制
-##### 1）核心流程
-1. **接口定义**​：通过注解声明 API 端点及参数。
-2. ​**动态代理**​：`Retrofit.create()` 生成接口代理类，拦截方法调用。
-3. ​**请求构建**​：解析注解生成 `ServiceMethod`，组装 HTTP 请求。
-4. ​**网络执行**​：通过 `OkHttp` 执行请求，处理响应。
-5. ​**数据解析**​：使用 `Converter` 将响应体转换为 Java 对象。
-##### 2）关键设计
-- **动态代理**​：`Proxy.newProxyInstance` 生成接口代理类，实现方法拦截
-- ​**责任链模式**​：拦截器链处理请求/响应（如日志、重试）。
-- ​**工厂模式**​：`ConverterFactory` 和 `CallAdapterFactory` 扩展功能。
-- ​**线程模型**​：依赖 `OkHttp` 的调度器（`Dispatcher`）管理异步任务。
+#### 三、高频考点与原理剖析
+1. ​**动态代理原理**​
+    - 通过 `Retrofit.create(Class<T> service)` 生成代理类，拦截接口方法调用，解析注解生成 `ServiceMethod`，最终调用 `OkHttp` 发送请求
+2. ​**线程切换与调度**​
+    - 默认在后台线程执行网络请求，结果回调到主线程（需配置 `callbackExecutor`）。
+    - 结合 `RxJava` 或 Kotlin 协程实现更灵活的线程调度。
+3. ​**缓存机制**​
+    - 依赖 `OkHttp` 的缓存策略，通过 `Cache` 类配置磁盘缓存目录和大小。
+    - 支持强缓存（`Cache-Control: max-age`）和协商缓存（`ETag`/`Last-Modified`）
+4. ​**多 Base URL 处理**​
+    - 方案一：通过注解 `@Url` 动态指定完整 URL。
+    - 方案二：为不同域名创建多个 Retrofit 实例。
+    - 方案三：自定义 `CallAdapter` 动态切换 Base URL（如`JessYan` 方案）
+5. ​**拦截器与日志**​
+    - 添加 `HttpLoggingInterceptor` 打印请求/响应日志。
+    - 自定义拦截器实现鉴权、重试、数据加密等
+#### 四、设计模式与源码解析
+1. ​**设计模式应用**​
+    - ​**动态代理**​：接口方法调用转换为 HTTP 请求。
+    - ​**建造者模式**​：通过 `Retrofit.Builder` 逐步配置参数。
+    - ​**适配器模式**​：将 `Call` 转换为不同响应类型（如 `RxJava`、协程）。
+    - ​**策略模式**​：根据注解选择不同的请求策略（如 GET/POST）
 
-#### 四、优化策略
-##### 1）性能优化
-todo
-
-##### 2）错误处理
-- ​**全局异常拦截**​：通过 `Interceptor` 统一处理网络错误。
-- ​**重试机制**​：自定义拦截器实现自动重试逻辑。
-##### 3）安全增强
-- ​**`HTTPS` 证书校验**​：防止中间人攻击。
-- ​**Token 动态注入**​：拦截器中自动附加认证信息。
-
-#### 五、适用场景
-1. `​RESTful API` 调用**​：如电商、社交应用的接口请求。
-2. ​**文件上传/下载**​：支持 `@Multipart` 和 `@Streaming`。
-3. ​**实时数据推送**​：结合 `WebSocket` 或长轮询。
-4. ​**跨平台服务**​：与 Spring Boot 后端配合，实现多端统一接口。
-
-#### 六、面试考察点
-##### **高频问题**​
-1. ​**Retrofit 的工作原理？​**​
-    - 答：注解定义接口 → 动态代理生成实现类 → 解析注解构建请求 → `OkHttp` 执行请求 → 数据解析。
-2. ​**如何实现动态 Base URL？​**​
-    - 答：通过拦截器修改请求 URL 或使用第三方库（如 `RetrofitUrlManager`）。
-3. ​`Retrofit` 与 `OkHttp` 的关系？​**​
-    - 答：Retrofit 依赖 `OkHttp` 作为底层网络库，自身专注于接口封装。
-4. ​**如何优化网络请求性能？​**​
-    - 答：连接池复用、缓存策略、压缩数据、异步线程管理。
-##### **源码解析**​
-- ​`ServiceMethod`：解析接口方法注解，生成请求参数和 URL。
-- ​`CallAdapter`**​：适配不同返回类型（如 `Call<T>`、`Observable<T>`）。
-- ​`Converter.Factory`​：实现 `JSON/XML` 序列化/反序列化。
-
-#### 七、替代方案与扩展
-- **替代方案**​：
-    - ​`Volley`​：适合轻量级请求，但功能较少。
-    - ​`Ktor`​：`JetBrains` 官方的异步 HTTP 客户端，支持协程。
-- ​**扩展功能**​：
-    - ​`Retrofit + RxJava`​：响应式编程处理异步流。
-    - ​`Retrofit + Room*`：本地缓存与网络数据同步。
+2. ​**关键类解析**​
+    - `Retrofit`：核心配置类，持有 `ServiceMethodCache`、`CallFactory` 等。
+    - `ServiceMethod`：解析接口方法注解，生成请求参数和 `Call`。
+    - `CallAdapter`：处理响应类型转换（如 `Observable`、`LiveData`）
+#### 五、性能优化与实战技巧
+1. ​**连接池优化**​
+    - 配置 `OkHttp` 的 `ConnectionPool`，复用 TCP 连接，减少握手开销。
+    ```java
+    ConnectionPool connectionPool = new ConnectionPool(5, 5, TimeUnit.MINUTES);
+    OkHttpClient client = new OkHttpClient.Builder()
+        .connectionPool(connectionPool)
+        .build();
+    ```
+2. ​**内存泄漏预防**​
+    - 使用 `Application` Context 替代 Activity Context。
+    - 在 Activity/Fragment 销毁时取消未完成的请求（`call.cancel()`）。
+3. ​**大文件下载**​
+    - 启用流式响应：`@Streaming` 注解避免内存溢出。
+    - 分块下载：通过 `Range` 头实现断点续传。
+4. ​**多线程并发控制**​
+    - 配置 `OkHttp` 的 `Dispatcher`，限制最大并发请求数。
+    ```java
+    Dispatcher dispatcher = new Dispatcher();
+    dispatcher.setMaxRequests(100);  // 最大并发数
+    dispatcher.setMaxRequestsPerHost(10);  // 单主机最大并发数
+    ```
+#### 六、高频面试题
+1. ​**Retrofit 的动态代理是如何实现的？​**​
+    - 通过 `Proxy.newProxyInstance` 生成接口代理类，拦截方法调用并解析注解生成请求
+2. ​**Retrofit 如何支持多线程并发？​**​
+    - 依赖 OkHttp 的 `Dispatcher` 线程池管理请求，通过配置最大并发数和主机并发数优化性能。
+3. ​**如何实现 Retrofit 的全局错误处理？​**​
+    - 自定义 `Interceptor` 拦截所有响应，统一处理错误码和异常。
+4. ​**Retrofit 与 `OkHttp` 的关系？​**​
+    - Retrofit 基于 `OkHttp` 实现网络请求，`OkHttp` 负责底层 `TCP` 连接、缓存、重试等。
+5. ​**如何优化 Retrofit 的性能？​**​
+    - 启用连接池复用、压缩请求体、使用 `RGB_565` 格式解析图片、配置合理的线程池。

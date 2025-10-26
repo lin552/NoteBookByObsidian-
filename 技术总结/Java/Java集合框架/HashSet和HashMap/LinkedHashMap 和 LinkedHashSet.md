@@ -103,7 +103,7 @@ System.out.println("LinkedHashSet 记录访问轨迹 visitHistory "+visitHistory
 #### 三、使用与优化建议
 ##### 1) 使用场景
 ###### `LinkedHashMap`
-- 需要维护插入或访问顺序的缓存（如LRU）
+- 需要维护插入或访问顺序的缓存（如`LRU`）
 - 需要按顺序遍历键值对的场景（如日志记录）
 ###### `LinkedHashSet`
 - 需要去重保持插入顺序的集合（如用户访问历史记录）

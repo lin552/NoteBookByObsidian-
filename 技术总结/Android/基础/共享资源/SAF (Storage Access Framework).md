@@ -61,7 +61,6 @@ values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES
     - ​**回答**​：通过`ContentResolver.takePersistableUriPermission()`获取持久权限，确保应用重启后仍可访问
 11. ​**如何监听文件变化？​**​
     - ​**回答**​：注册`ContentObserver`监听`URI`：
-    
 ```java
 getContentResolver().registerContentObserver(uri, true, new ContentObserver(new Handler()) {
     @Override
@@ -69,7 +68,7 @@ getContentResolver().registerContentObserver(uri, true, new ContentObserver(new 
         // 文件更新逻辑
     }
 });
-```
+
 
 #### **六、进阶问题**
 12. ​**SAF与Scoped Storage的关系？​**​
@@ -77,12 +76,5 @@ getContentResolver().registerContentObserver(uri, true, new ContentObserver(new 
     - ​**回答**​：
         - ​**Scoped Storage**​：Android 10+的存储隔离机制，限制应用访问外部存储。
         - ​**SAF**​：在Scoped Storage下，通过标准API访问公共媒体文件，无需请求存储权限
-            
-            3
-            
-            7
-            
-            。
 13. ​**如何实现跨设备文件同步？​**​
-    
     - ​**回答**​：结合`MediaStore`和SAF，通过URI标识文件，利用云存储服务（如Google Drive）同步数据。

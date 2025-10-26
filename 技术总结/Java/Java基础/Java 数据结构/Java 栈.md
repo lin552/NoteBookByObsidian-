@@ -65,9 +65,9 @@ System.out.println("-----------------------------------------------------");
 Stack<Integer> stack = new Stack<>(); //声明
 
 //操作和其他基本一样
-stack.pop();
-stack.peek();
-stack.push(1);
+stack.pop(); //弹栈
+stack.peek(); //出栈
+stack.push(1); //压栈
 stack.isEmpty();
 stack.clear();
 ```

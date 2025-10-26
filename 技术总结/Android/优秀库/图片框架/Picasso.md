@@ -5,77 +5,125 @@ tags:
   - Picasso
   - 图片框架
 ---
-#### 一、Picasso概述
-- ​**定义**​：  
-    Picasso 是 Square 公司开源的 ​**Android 图片加载框架**，专注于轻量级、高性能的图片加载与缓存，以简洁的 API 和高效的内存管理著称。
-- ​**核心优势**​：
-    - ​**轻量级**​：APK 体积仅约 120KB，适合对包体敏感的项目
-    - ​**自动内存管理**​：两级内存缓存（LruCache） + 磁盘缓存（DiskLruCache），减少 OOM 风险
-    - ​**链式调用**​：简洁的 API 设计，代码量少（如 `Picasso.with().load().into()`）。
-    - ​**图片变换**​：支持圆角、圆形裁剪、缩放等基础操作（需依赖第三方库扩展复杂变换）
+Picasso 是 Square 公司推出的轻量级图片加载库，以**简单易用、功能全面**著称，广泛用于 Android 应用中处理图片加载、缓存、变换等场景。其核心考点围绕**基础使用**、**缓存机制**、**性能优化**及**与其他库的对比**展开，以下是系统梳理：
 
-#### 2）核心功能与使用
-##### 1）基本用法
-todo
+#### 一、核心机制与基础使用
+##### 1.核心组件​
+- ​**Picasso 实例**​：全局单例，管理图片加载的全局配置（如缓存、线程池）。
+- ​**Target**​：图片加载的目标（如 `ImageView`），负责接收加载结果（成功/失败）。
+- ​**Request**​：图片加载的请求对象，封装 URL、变换参数、回调等。
+##### ​2. 基础 API 使用​
+```java
+// 1. 初始化 Picasso（全局单例）
+Picasso picasso = Picasso.get();
 
-##### 2）高级用法
-todo
+// 2. 加载网络图片到 ImageView
+picasso.load("https://example.com/image.jpg")
+    .placeholder(R.drawable.placeholder)  // 占位图（加载中）
+    .error(R.drawable.error)              // 错误图（加载失败）
+    .into(imageView);                     // 目标 ImageView
 
-#### 三、原理与机制
-##### 1）核心机制
-1. ​**请求创建**​：通过 `Picasso.get().load()` 生成 `RequestCreator`。
-2. ​**请求分发**​：`Dispatcher` 管理请求队列，分配至线程池执行。
-3. ​**数据获取**​：从内存/磁盘缓存读取，未命中则触发网络请求（默认使用 `OkHttp`）。
-4. ​**解码与渲染**​：将图片数据解码为 Bitmap，应用变换后提交至 `UI` 线程渲染。
-##### 2）关键设计
-- ​**单例模式**​：全局唯一实例，通过 `Picasso.get()` 获取
-- ​**线程模型**​：
-    - ​**主线程**​：处理 `UI` 渲染与用户交互。
-    - ​**工作线程池**​：默认 4 个线程（根据网络状态动态调整）。
-- ​**缓存策略**​：
-    - ​**内存缓存**​：占用应用内存的 15%，采用 `LRU` 淘汰机制
-    - ​**磁盘缓存**​：默认 `50MB`，基于 `DiskLruCache` 实现
-
-#### 四、优化策略
-##### 1）性能优化
-- **图片采样率**​：通过 `resize()` 缩小尺寸，减少内存占用。
-- ​**压缩格式**​：使用 `WebP` 替代 `JPEG/PNG`，降低包体体积。
-- ​**预加载**​：提前加载高频图片到缓存。
-```kotlin
-Picasso.get().load(url).fetch()
+// 3. 加载本地资源图片
+picasso.load(R.drawable.local_image)
+    .resize(200, 200)                     // 调整尺寸
+    .centerCrop()                         // 居中裁剪
+    .into(imageView);
 ```
-##### 2）错误处理
-​**全局监听**​：通过 `Listener` 统一处理加载失败事件。
-```kotlin
-Picasso.get().listener { picasso, uri, exception ->
-    Log.e("Picasso", "加载失败: ${exception.message}")
-}
+
+#### 二、缓存机制与内存管理
+##### ​1. 缓存策略​
+
+Picasso 采用**两级缓存**​（内存缓存 + 磁盘缓存），遵循 HTTP 缓存规范（RFC 7234），支持强缓存和协商缓存。
+- ​**内存缓存**​：
+    - 存储解码后的 Bitmap，使用 LRU（最近最少使用）算法淘汰旧数据。
+    - 默认大小为可用内存的 15%（可通过 `MemoryCache` 自定义）。
+- ​**磁盘缓存**​：
+    - 存储压缩后的图片文件（如 `JPEG/PNG`），默认启用（需设备支持）。
+    - 默认大小为 `50MB`（可通过 `DiskCache` 自定义路径和大小）。
+
+##### ​**2. 内存优化**​
+- ​**自动回收**​：当内存不足时，Picasso 会自动回收未被使用的 Bitmap，减少 `GC` 压力。
+- ​**避免重复加载**​：同一 URL 的多次请求会被合并，仅加载一次。
+
+#### 三、高级特性与实战技巧
+##### ​1. 图片变换（Transformations）​​
+Picasso 支持丰富的图片变换操作，通过 `Transformation` 接口实现（可自定义）：
+- ​**内置变换**​：
+    ```java
+    // 圆形裁剪
+    .transform(new CircleTransform())
+    // 圆角裁剪（半径 10dp）
+    .transform(new RoundedCornersTransform(10))
+    // 模糊（半径 25）
+    .transform(new BlurTransform(context, 25))
+    ```
+
+- ​**自定义变换**​：  
+    实现 `Transformation` 接口的 `transform()` 和 `key()` 方法，例如添加水印：
+    ```java
+    public class WatermarkTransform implements Transformation {
+        @Override
+        public Bitmap transform(Bitmap source) {
+            // 添加水印逻辑
+            return watermarkedBitmap;
+        }
+    
+        @Override
+        public String key() {
+            return "watermark"; // 唯一标识变换类型
+        }
+    }
+    ```
+
+##### ​2. 渐进式加载（Progressive Loading）​​
+支持 JPEG 的渐进式加载（分阶段显示模糊到清晰的图片），提升用户体验：
+```java
+// 启用渐进式加载（需服务器返回渐进式 JPEG）
+picasso.load(url)
+    .progressive()
+    .into(imageView);
 ```
-##### 3）弱网优化
-- ​**超时设置**​：自定义 `OkHttp` 客户端调整超时时间。
-- ​**重试机制**​：通过拦截器实现自动重试逻辑。
+##### ​3. 与 `RecyclerView` 集成​
+在列表（如 `RecyclerView`）中加载图片时，需注意**复用问题**​（同一 `ImageView` 可能被重复绑定不同 URL）。Picasso 自动处理此问题，但需确保：
+- 在 `onBindViewHolder` 中调用 `Picasso.get().load(url).into(viewHolder.imageView)`。
+- 在 `onViewRecycled` 中取消未完成的请求（可选）：
+    ```java
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        Picasso.get().cancelRequest(holder.imageView);
+        super.onViewRecycled(holder);
+    }
+    ```
 
-#### 五、优缺点分析
-|​**优点**​|​**缺点**​|
-|---|---|
-|轻量级，APK 体积小|功能较少（如不支持 GIF、视频封面）|
-|内存管理高效，避免 OOM|复杂图片变换需依赖第三方库|
-|链式调用简洁，学习成本低|不支持动态缩放（如 `FitCenter` 需手动计算）|
-#### 六、适用场景
-1. ​**简单图片加载**​：如电商商品图、用户头像等静态内容。
-2. ​**低内存设备**​：适合低端机型或对内存敏感的场景。
-3. ​**快速原型开发**​：轻量级框架可快速集成，减少配置成本。
+#### 四、高频面试题
+1. ​**Picasso 如何避免 `OOM`（内存溢出）？​**​
+    - 通过 `LRU` 内存缓存限制 Bitmap 数量。
+    - 自动回收未被使用的 Bitmap，减少内存占用。
+2. ​**Picasso 的缓存策略是什么？如何配置？​**​
+    - 两级缓存（内存 + 磁盘），内存缓存默认 15% 可用内存，磁盘缓存默认 `50MB`。可通过 `Picasso.Builder` 自定义：
+        ```java
+        Picasso picasso = new Picasso.Builder(context)
+            .memoryCache(new LruCache(20 * 1024 * 1024)) // 20MB 内存缓存
+            .build();
+        ```
+3. ​**如何实现图片的圆形裁剪？​**​
+    - 使用 `CircleTransform`（内置）或自定义 `Transformation`。
+4. ​**Picasso 与 Glide 的区别？​**​
+    - ​**轻量性**​：Picasso 更轻量（约 `100KB`），Glide 更重（约 `200KB`）。
+    - ​**功能**​：Glide 支持 GIF、视频帧，Picasso 仅支持静态图。
+    - ​**缓存**​：Glide 缓存策略更灵活（如内存/磁盘缓存分离），Picasso 依赖 `LRU`。
+5. ​**如何取消 Picasso 的未完成请求？​**​
+    - 调用 `Picasso.get().cancelRequest(Target target)` 或 `cancelRequest(Request request)`。
 
-#### 七、对比其他框架
-|​**框架**​|​**优势**​|​**劣势**​|
-|---|---|---|
-|Picasso|体积小，API 简洁|功能有限，不支持 GIF|
-|Glide|支持 GIF、视频缩略，内存优化更强|体积较大（约 400KB）|
-|Fresco|支持渐进式加载，内存管理更复杂|学习曲线陡峭|
-#### 八、面试考察点
-1. **Picasso 的缓存机制？​**​
-    - 答：两级缓存（内存 + 磁盘），内存用 `LruCache`，磁盘默认 `50MB`。
-2. ​**如何实现图片圆角效果？​**​
-    - 答：需引入第三方库（如 `picasso-transformations`）并自定义 `Transformation`。
-3. ​**Picasso 如何取消请求？​**​
-    - 答：通过 `tag()` 标记请求，调用 `cancelTag()` 批量取消。
+#### 五、源码解析与最佳实践
+##### ​1. 请求流程​
+Picasso 的请求流程可概括为：
+1. 构建 `Request` 对象（URL、变换参数等）。
+2. 通过 `Picasso` 实例提交请求，生成 `Target`。
+3. 检查内存缓存（命中则直接显示）。
+4. 未命中则从磁盘缓存加载（命中则解码后显示）。
+5. 磁盘缓存未命中则发起网络请求，下载后解码并缓存。
+##### ​2. 最佳实践​
+- ​**避免主线程阻塞**​：Picasso 自动在后台线程处理网络请求和解码，无需手动切换线程。
+- ​**合理设置图片尺寸**​：通过 `resize(width, height)` 调整图片大小，避免加载过大的 Bitmap。
+- ​**使用占位图**​：提升用户体验，避免空白区域闪烁。

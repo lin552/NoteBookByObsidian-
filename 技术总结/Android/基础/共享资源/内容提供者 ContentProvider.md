@@ -94,3 +94,26 @@ cursor.registerContentObserver(new ContentObserver(new Handler()) {
     - ​**回答**​：底层基于Binder机制，`ContentResolver`通过`AIDL`与`ContentProvider`所在进程通信，开发者无需直接处理`Binder`。
 13. ​`ContentProvider`的线程安全性如何保证？​**​
     - ​**回答**​：若多个线程同时调用CRUD方法，需在实现中自行加锁（如`synchronized`），或确保数据库操作本身线程安全（如SQLite默认支持多线程读，单线程写）。
+#### 八、启动过程
+##### 1.时序流程
+应用进程启动 → `ActivityThread` 初始化 → Application 对象创建 → `ContentProvider` 初始化 → 主 Activity 创建
+##### 2.`ContentProvider`初始化（核心阶段）
+在 `Application`对象创建后、`Application.onCreate()`调用前，系统会**遍历并初始化所有注册的 `ContentProvider`。这一过程由 `ActivityThread`的 `installContentProviders()`方法完成：
+```java
+private void installContentProviders(Context context, List<ProviderInfo> providers) {
+    final ArrayList<ContentProviderHolder> results = new ArrayList<>();
+    for (ProviderInfo info : providers) {
+        // 1. 创建 ContentProvider 实例（调用构造函数）
+        ContentProvider provider = createProvider(context, info);
+        // 2. 调用 ContentProvider.onCreate()
+        provider.onCreate();
+        // 3. 将初始化后的 Provider 存入结果列表
+        results.add(new ContentProviderHolder(info.authority, provider));
+    }
+    // ... 将结果传递给 AMS 完成注册
+}
+```
+关键细节：
+- **初始化时机**​：`ContentProvider` 的构造函数和 `onCreate()`方法在 `Application.onCreate()`之前调用。
+- ​**线程环境**​：初始化过程运行在**主线程（`UI` 线程）​**，因此 `onCreate()`中禁止执行耗时操作（否则会导致 `ANR`）。
+- **依赖处理**​：若多个 `ContentProvider` 存在依赖关系（如 A 依赖 B），系统**不保证初始化顺序**，需自行通过懒加载或显式调用解决依赖。
