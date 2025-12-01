@@ -91,12 +91,5 @@ private val binding by viewBinding<ActivityMainBinding>()
 3. ​**Fragment 中的内存泄漏**​
     - 需在 `onDestroyView` 中置空绑定类，防止因 Fragment 生命周期长于视图导致的泄漏
 
-#### 七、适用场景
-1. ​**替代 findViewById**​
-    - 所有需要手动查找视图的场景，如 Activity、Fragment、自定义 View
-2. ​**复杂布局管理**​
-    - 多层级嵌套布局或动态加载的视图（如 `include`、`merge`、`ViewStub`）
-3. ​**模块化开发**​
-    - 独立模块间的视图隔离，避免 ID 冲突
-4. ​**性能敏感场景**​
-    - 高频刷新的列表（`RecyclerView`）或需要快速响应的交互界面
+#### 七、实践问题
+##### 两个ViewBinding绑定同一个view引用的问题

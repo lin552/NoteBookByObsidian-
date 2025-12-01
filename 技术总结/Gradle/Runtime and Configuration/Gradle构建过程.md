@@ -18,6 +18,16 @@ tags:
     - 按依赖顺序执行任务链（如编译、打包、签名）。
     - 典型任务链：`clean → compileJava → processResources → assembleDebug`。
 
+> What happens when a Gradle build runs?
+> 
+> Gradle builds run in three phases. Each of these phases executes different parts of code that you define in your build files.
+> 
+> - **Initialization** determines which projects and subprojects are included in the build, and sets up classpaths containing your build files and applied plugins. This phase focuses on a settings file where you declare projects to build and the locations from which to fetch plugins and libraries.
+> - **Configuration** registers tasks for each project, and executes the build file to apply the user's build specification. It's important to understand that your configuration code won't have access to data or files produced during execution.
+> - **Execution** performs the actual "building" of your application. The output of configuration is a [Directed Acyclic Graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph) (DAG) of tasks, representing all required build steps that were requested by the user (the tasks provided on the command line or as defaults in the build files). This graph represents the relationship between tasks, either explicit in a task's declaration, or based on its inputs and outputs. If a task has an input that is the output of another task, then it must run after the other task. This phase runs out-of-date tasks in the order defined in the graph; if a task's inputs haven't changed since its last execution, Gradle will skip it.
+> 
+> For more information see the Gradle [Build lifecycle](https://docs.gradle.org/current/userguide/build_lifecycle.html).
+
 #### 二、构建任务流程
 Android 构建流程可拆解为以下核心步骤：
 1. ​**清理（Clean）​**​
