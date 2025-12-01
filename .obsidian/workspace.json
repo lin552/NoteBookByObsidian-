@@ -11,10 +11,14 @@
             "id": "7ac382abf75a8ab3",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "技术总结/git/git基本概念.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "git基本概念"
             }
           }
         ]
@@ -138,12 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "技术总结/git/git基本概念.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "git基本概念 的大纲"
             }
           }
         ],
@@ -166,17 +171,17 @@
   },
   "active": "7ac382abf75a8ab3",
   "lastOpenFiles": [
+    "技术总结/git/Gerrit 工作流程.md",
+    "技术总结/git/git基本概念.md",
+    "技术总结/git/git代码提交规范.md",
+    "技术总结/座舱开发/座舱开发 Command Line.md",
     "技术总结/提效工具/sublime text.md",
     "技术总结/提效工具",
     "技术总结/座舱开发/重要资源.md",
     "技术总结/座舱开发/蓝牙.md",
-    "技术总结/座舱开发/座舱开发 Command Line.md",
     "技术总结/座舱开发/vim使用.md",
-    "技术总结/座舱开发/git代码提交规范.md",
     "技术总结/座舱开发",
     "技术总结/大模型/ncnn.md",
-    "技术总结/git/git基本概念.md",
-    "技术总结/git/Gerrit 工作流程.md",
     "技术总结/git",
     "技术总结/Kotlin协程/协程作用域.md",
     "技术总结/Gradle/Runtime and Configuration/Gradle构建过程.md",
