@@ -77,6 +77,16 @@ app:layout_constraintCircleAngle="45"/>
 - ​**使用 `layout_constraintVertical_bias`**​：微调视图在链中的偏移量（0~1）。
 - ​**简化约束**​：优先使用 `0dp`（`MATCH_CONSTRAINT`）配合权重，减少冗余属性。
 - ​**动态修改约束**​：通过代码动态更新约束（如滑动时调整位置）。
+###### 4.3优化约束关系：
+- 用 `Guideline`（辅助线）替代跨视图约束，减少直接依赖；
+- 避免循环约束（如 A 约束 B，B 又约束 A）；
+- 优先用 `match_parent`/`wrap_content`而非 `0dp`+复杂比例约束；
+##### 4.4耗时原因：`LinearSystem`的约束求解计算量过大**​·
+`LinearSystem`是 `ConstraintLayout`的**核心引擎**，负责将布局中的**约束关系**（如 `app:layout_constraintTop_toBottomOf`）转化为**线性方程组**（`Ax = b`）并求解，以确定每个视图的位置和尺寸。其初始化过程（`LinearSystem.<init>(82)`）的耗时取决于以下因素：
+- **视图数量**：单个 `ConstraintLayout`包含的子视图越多（如 >20 个），方程数量和变量越多，求解耗时呈**指数级增长**；
+- **约束复杂度**：跨层级约束、循环约束、链式约束（`Chain`）、百分比约束（`0dp`+`layout_constraintDimensionRatio`）等会增加方程的复杂度；
+- **嵌套层级**：`ConstraintLayout`嵌套层级过深（如 >3 层），每层都需独立求解，累积计算量；
+- **设备性能**：低端车机（如 ARM Cortex-A53）的 CPU 算力弱，无法快速处理复杂约束。
 
 #### 五、面试考察点
 1. `​ConstraintLayout` 的核心优势是什么？​**​

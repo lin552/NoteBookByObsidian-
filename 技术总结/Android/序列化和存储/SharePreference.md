@@ -53,6 +53,26 @@ String username = sp.getString("username", "默认值");
 4. ​**文件模式弃用**​：
     - `MODE_WORLD_READABLE` 和 `MODE_WORLD_WRITEABLE` 已废弃，存在安全风险。
 
+##### 1）为什么 `apply()`仍可能导致 ANR?
+###### ① 系统强制等待机制：`QueuedWork`的生命周期绑定
+Android 系统为确保 SP 数据在关键生命周期（如 `Activity.onPause()`、`Service.onStop()`）时不丢失，会在这些节点**强制等待 `QueuedWork`队列中的所有 SP 写入任务完成**。
+
+实现逻辑：
+- `apply()`会将写入任务封装为 `Runnable`，添加到 `QueuedWork`的全局队列（`sWork`）中。
+- 系统通过 `QueuedWork.waitToFinish()`方法，在生命周期切换时**阻塞主线程**，直到队列中所有任务执行完毕。
+- 
+**问题场景**：
+若短时间内发起大量 `apply()`（如循环中频繁写入 SP），`QueuedWork`队列堆积，系统等待时间变长，最终导致主线程 ANR（尤其是低端设备或 IO 繁忙时）。
+
+###### 2）主线程任务执行：`QueuedWork`的线程模型
+在 Android 12（API 31）之前，`QueuedWork`的任务默认在**主线程 Handler**​ 中执行（通过 `getHandler()`获取的 `Handler`绑定主线程 Looper）。这意味着：
+- 即使 `apply()`是“异步”提交，实际刷盘任务仍在主线程排队执行。
+- 若任务耗时（如大量键值对写入），会直接阻塞主线程。
+###### 3）`SpWaitKiller`的解决方案：绕过系统强制等待
+`SpWaitKiller`通过上述“动态代理系统内部类”的手段，本质上做了两件事：
+1. **替换 `QueuedWork`的任务队列**：用“空实现”或“后台线程代理队列”替换系统默认的同步等待队列，避免 `waitToFinish()`阻塞主线程。
+2. **转移任务到后台线程**：将 `QueuedWork`的任务从主线程 Handler 转移到后台线程执行，避免主线程 IO 阻塞。
+
 #### 五、可优化点
 1. ​**异步写入**​：
     - 优先使用 `apply()` 替代 `commit()`，避免主线程阻塞
@@ -63,6 +83,9 @@ String username = sp.getString("username", "默认值");
     - ​`Jetpack DataStore`：基于 Kotlin 协程，支持异步操作和类型安全
 4. ​**避免频繁读写**​：
     - 缓存热点数据到内存（如单例对象）。
+5. 减少SP写入频率
+	- **批量写入**：合并多次修改，一次性 `apply()`（如收集 10 条配置后统一提交）。
+	- **延迟写入**：对高频修改（如滑动中的进度记录），使用内存缓存暂存，定时批量刷盘。
 
 #### 六、面试考察点
 1. ​**SP 和数据库（SQLite）的区别？​**​
