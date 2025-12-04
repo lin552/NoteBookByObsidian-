@@ -79,3 +79,6 @@ public class MyAppGlideModule extends AppGlideModule {
         Glide.with(context).load(url).preload();  // 预加载到缓存
         ```
     - ​**智能降级**​：根据网络状态动态切换图片质量
+#### 五、源码细节分析
+1.Glide的with做了什么
+`RequestManager`

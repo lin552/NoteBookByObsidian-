@@ -53,6 +53,8 @@ try {
 - 搜索特定类：在Histogram顶部搜索框输入类名（如`MainActivity`）；
 - 对比两次快照：生成两个时间点的hprof（如操作前后），通过 **Compare with previous**​ 按钮，找出新增/未释放的对象（定位泄漏）。
 
+http://developer.android.com/studio/profile/capture-heap-dump?hl=zh-cn#why-profile-memory
+
 ##### 2）MAT查看
 **步骤1：找到 `hprof-conv`工具**​
 `hprof-conv`位于 Android SDK 的 `platform-tools`目录，路径示例：
