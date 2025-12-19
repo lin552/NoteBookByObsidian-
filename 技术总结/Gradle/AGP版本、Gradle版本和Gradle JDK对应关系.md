@@ -4,6 +4,8 @@
 tags:
 ---
 #### 一、核心版本对应关系
+表格仅为参考
+
 | AGP 版本              | 所需 Gradle 版本     | 所需 JDK 版本                             |
 | ------------------- | ---------------- | ------------------------------------- |
 | ​**AGP 8.3+​**​     | Gradle 8.4+      | ​**JDK 17+​**​ (强制要求)                 |
@@ -11,6 +13,7 @@ tags:
 | ​**AGP 7.4 - 7.5**​ | Gradle 7.5+      | ​**JDK 11**​ (官方推荐)，可在 JDK 8-17 范围内使用 |
 | ​**AGP 7.0 - 7.3**​ | Gradle 7.0+      | ​**JDK 11**​ (官方推荐)，可在 JDK 8-11 范围内使用 |
 | ​**AGP 4.2+​**​     | Gradle 6.7.1+    | ​**JDK 8+​**​ (最低要求)                  |
+https://developer.android.com/build/releases/gradle-plugin?hl=zh-cn 参考公共文档
 #### 二、配置AGP版本
 - ​**配置 AGP 版本**​：在项目根目录（Project Root）的 `build.gradle`文件中的 `dependencies`块内进行配置。
 ```gradle

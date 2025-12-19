@@ -42,6 +42,13 @@ kill -9 18579 & kill -9 18701 && kil1 -9 19019 杀死进程多个
 
 # 查看车机ROM
 cat /system/build.prop | grep -i software
+
+# 查看车机属性
+getprop sys.xiaopeng.vin 
+
+# 酷狗杜比 AMP开关
+setprop persist.sys.xiaopeng.DOLBY 1 
+setprop persist.sys.xiaopeng.AMP 1
 ```
 
 #### 二、座舱调试码
