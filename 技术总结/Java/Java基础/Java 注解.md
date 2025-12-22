@@ -55,21 +55,172 @@ if(method.isAnnotationPresent(MyAnnotation.class)){
 - ​**缓存反射对象**​：将 `Method`、`Field` 缓存以减少重复解析
 - ​**编译时处理优先**​：使用 APT 生成代码替代运行时反射（如 `MapStruct`）
 - ​**合理设计注解属性**​：避免复杂数据结构，优先使用基本类型和字符串
+#### 七、实用注解
+##### 1）BeanValidation(JSR 380/Jakarta Bean Validation)
+1️⃣ 基本验证注解
+```java
+import javax.validation.constraints.*;
 
-#### 七、面试考察点
-1. ​**原理**​：
-    - 元注解的作用及区别（如 `@Retention` vs `@Target`）
-    - 注解处理流程（APT 和反射的区别）
-2. ​**应用**​：
-    - 如何通过反射读取注解？写出代码示例
-    - 自定义注解的步骤及注意事项
-3. ​**场景**​：
-    - Spring 如何利用注解实现依赖注入？
-    - `@Override` 在编译时如何校验？
-#### 八、适用场景
-1. ​**框架配置**​：Spring 的 `@Component`、`@RequestMapping` 简化 XML 配置
-2. ​**单元测试**​：`JUnit` 的 `@Test` 标记测试方法
-3. ​**代码生成**​：`Lombok` 的 `@Getter` 自动生成方法
-4. ​**`AOP` 编程**​：结合 `@Aspect` 实现日志、事务管理
-5. ​**数据校验**​：Hibernate 的 `@NotNull` 校验字段合法性
-6. ​**文档生成**​：Swagger 的 `@ApiModel` 生成 API 文档
+public class User {
+    @NotNull
+    private String name;
+    
+    @Min(18)
+    @Max(100)
+    private int age;
+    
+    @Size(min = 6, max = 20)
+    private String password;
+    
+    @Email
+    private String email;
+    
+    @Pattern(regexp = "^[0-9]{11}$")
+    private String phone;
+    
+    @Positive
+    private BigDecimal salary;
+    
+    @Past
+    private LocalDate birthDate;
+    
+    @Future
+    private LocalDateTime appointmentTime;
+}
+```
+
+2️⃣ 方法参数验证
+```java
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+
+public class UserService {
+    
+    public void createUser(
+        @NotBlank(message = "用户名不能为空") String username,
+        @Email(message = "邮箱格式不正确") String email,
+        @Min(value = 18, message = "年龄必须大于18岁") int age,
+        @Valid @NotNull(message = "地址信息必填") Address address
+    ) {
+        // 方法逻辑
+    }
+}
+```
+##### 2) Google Guava的 @Nullable/@Nonnull
+```java
+import com.google.common.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+
+public class Example {
+    public void processString(@NotNull String input) {
+        // 保证input不为null
+    }
+    
+    public String findName(@Nullable String id) {
+        // 可能为null的返回值
+        if (id == null) {
+            return null;
+        }
+        return database.get(id);
+    }
+}
+```
+##### 3)Apache Commons Lang 的 @NonNull
+```java
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+
+public class ValidatorExample {
+    
+    public void validateInput(@org.apache.commons.lang3.builder.ToStringStyle.NonNull String param) {
+        Validate.notNull(param, "参数不能为null");
+        Validate.notBlank(param, "参数不能为空白");
+        Validate.isTrue(param.length() <= 100, "参数长度不能超过100");
+    }
+}
+```
+##### 4)Spring Framework的验证注解
+```java
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@Validated  // 启用方法级验证
+public class UserController {
+    
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable @Min(1) Long id) {
+        return userService.findById(id);
+    }
+    
+    @PostMapping("/users")
+    public ResponseEntity<?> createUser(@RequestBody @Valid UserDto userDto) {
+        // @Valid 触发嵌套对象验证
+        return ResponseEntity.ok(userService.create(userDto));
+    }
+    
+    @GetMapping("/search")
+    public List<User> searchUsers(
+        @RequestParam @Size(min = 1, max = 50) String keyword,
+        @RequestParam(defaultValue = "0") @Min(0) int page,
+        @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size
+    ) {
+        return userService.search(keyword, page, size);
+    }
+}
+```
+##### 5)自定义类型限制注解
+###### 枚举指限制
+```java
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = EnumValidator.class)
+public @interface ValidEnum {
+    Class<? extends Enum<?>> enumClass();
+    String message() default "必须是有效的枚举值";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+
+// 使用示例
+public class Order {
+    @ValidEnum(enumClass = OrderStatus.class, message = "订单状态无效")
+    private String status;
+}
+```
+###### 数值范围限制
+```java
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = RangeValidator.class)
+public @interface ValidRange {
+    double min() default Double.MIN_VALUE;
+    double max() default Double.MAX_VALUE;
+    String message() default "数值超出允许范围";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+
+// 使用示例
+public class Product {
+    @ValidRange(min = 0, max = 10000, message = "价格必须在0-10000之间")
+    private BigDecimal price;
+}
+```
+##### 6)Lombok的类型安全构建
+```java
+import lombok.Builder;
+import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
+
+@Value
+@Builder
+@Jacksonized
+public class ApiRequest {
+    @NonNull String userId;           // 自动非空检查
+    @NonNull String action;
+    @NonNull Map<String, Object> data;
+    
+    // 编译时会生成包含所有@NonNull检查的构建逻辑
+}
+```

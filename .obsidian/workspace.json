@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "2497c3ec1be2ac0f",
+        "id": "1052d9b61c492c88",
         "type": "tabs",
         "children": [
           {
-            "id": "7ac382abf75a8ab3",
+            "id": "6e42a83f66e8d7d2",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "技术总结/Java/JVM/异常 Exception 和 Error.md",
+                "file": "技术总结/Java/Java基础/Java 注解.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "异常 Exception 和 Error"
+              "title": "Java 注解"
             }
           }
         ]
@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 313.5,
-    "collapsed": true
+    "width": 313.5
   },
   "right": {
     "id": "bf88f3ae9d89d5ad",
@@ -171,11 +170,24 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "7ac382abf75a8ab3",
+  "active": "6e42a83f66e8d7d2",
   "lastOpenFiles": [
-    "Java Error.png",
-    "技术总结/Java/JVM/虚拟内存和真实内存.md",
     "技术总结/Java/JVM/异常 Exception 和 Error.md",
+    "技术总结/Java/JVM/Java类中各部分初始化顺序.md",
+    "技术总结/Java/JVM/JVM.md",
+    "技术总结/Android/多线程/HandlerThread与IntentService(弃用).md",
+    "技术总结/数据库/数据库常见错误.md",
+    "技术总结/数据库/Room.md",
+    "技术总结/AndroidFramework/IPC/跨进程通讯方式有几种.md",
+    "技术总结/Android/多线程/多线程管理体系.md",
+    "技术总结/Java/JVM/虚拟内存和真实内存.md",
+    "技术总结/Java/JVM/值传递和引用传递.md",
+    "技术总结/Java/JVM/可达性分析算法.md",
+    "Java Error.png",
+    "Pasted image 20251120100602.png",
+    "未命名.base",
+    "未命名 2.base",
+    "未命名 1.base",
     "技术总结/Java/JVM/垃圾回收算法.md",
     "技术总结/Java/JVM/Java 类加载.md",
     "技术总结/Java/JVM/静态变量和实例变量的区别.md",
@@ -183,7 +195,6 @@
     "技术总结/座舱开发/蓝牙.md",
     "技术总结/座舱开发/重要资源.md",
     "技术总结/座舱开发/座舱开发 Command Line.md",
-    "未命名.base",
     "技术总结/Gradle/Dependency Management/Gradle依赖使用（grovvy & kts）.md",
     "技术总结/Gradle/项目版本配置.md",
     "技术总结/Gradle/Gradle Fundamentals.md",
@@ -192,14 +203,6 @@
     "技术总结/git/Gerrit 工作流程.md",
     "技术总结/git/git代码提交规范.md",
     "技术总结/Android/View组件/SwipeRefreshLayout.md",
-    "技术总结/Android/View组件/约束布局 ConstraintLayout.md",
-    "技术总结/Android/View组件/RecyclerView/RecyclerView优化.md",
-    "技术总结/Android/View组件/RecyclerView/RecyclerView在ListView改进.md",
-    "技术总结/Android/View组件/RecyclerView/RecyclerView.md",
-    "技术总结/Gradle/DSLs and APIs/Gradle Kotlin DSL Primer.md",
-    "技术总结/Gradle/AGP版本、Gradle版本和Gradle JDK对应关系.md",
-    "技术总结/Android/性能优化/内存优化思路/内存泄漏/LeakCanary.md",
-    "技术总结/架构/设计模式/设计模式七大原则.md",
     "技术总结/Android/性能优化/稳定性优化/静态代码分析在体验优化中的探索实践.pdf",
     "技术总结/Android/性能优化/网络优化思路/抖音网络优化实践.pdf",
     "技术总结/Android/性能优化/视频播放体验/抖音播放体验优化实践.pdf",
@@ -207,9 +210,6 @@
     "技术总结/Android/性能优化/启动速度优化/抖音启动性能监控平台建设实践.pdf",
     "技术总结/Android/性能优化/内存优化思路/抖音内存优化实践.pdf",
     "技术总结/Android/性能优化/流畅度优化/抖音Android流畅度优化实践.pdf",
-    "技术总结/Android/性能优化/功耗优化思路/抖音功耗优化实践.pdf",
-    "技术总结/Android/性能优化/端智能体验/抖音端智能优化用户体验的探索和实践-陈贻东.pdf",
-    "Pasted image 20251120100602.png",
     "技术总结/Pasted image 20250314221106.png",
     "技术总结/Pasted image 20250314220723.png",
     "技术总结/Pasted image 20250323202548.png",
@@ -220,7 +220,6 @@
     "未命名 1.canvas",
     "未命名 2.canvas",
     "技术总结/Pasted image 20250323175933.png",
-    "Pasted image 20250605105705.png",
-    "Pasted image 20250605105439.png"
+    "Pasted image 20250605105705.png"
   ]
 }
