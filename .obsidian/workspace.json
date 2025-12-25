@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "技术总结/Java/Java基础/Java 注解.md",
+                "file": "技术总结/Android/UI机制/Fragment/Fragment 回退栈.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Java 注解"
+              "title": "Fragment 回退栈"
             }
           }
         ]
@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "so文件",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -170,9 +170,21 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "6e42a83f66e8d7d2",
+  "active": "e1acbaeda7782506",
   "lastOpenFiles": [
+    "技术总结/Android/UI机制/Fragment/Fragment 事务.md",
+    "技术总结/Android/UI机制/Fragment/Fragment 回退栈.md",
+    "技术总结/Android/UI机制/Fragment/Activity 中管理 Fragment.md",
+    "技术总结/Android/UI机制/Fragment/setEnterShareElementCallback.md",
+    "技术总结/git/Gerrit 工作流程.md",
+    "技术总结/git/git基本概念.md",
+    "技术总结/JNI/so文件格式.md",
+    "技术总结/AndroidFramework/Handler/Handler涉及几个FD（文件描述符）.md",
+    "技术总结/AndroidFramework/Handler/epoll机制原理.md",
     "技术总结/Java/JVM/异常 Exception 和 Error.md",
+    "技术总结/JNI/so常见错误.md",
+    "技术总结/Java/Java基础/Java 注解.md",
+    "技术总结/JNI",
     "技术总结/Java/JVM/Java类中各部分初始化顺序.md",
     "技术总结/Java/JVM/JVM.md",
     "技术总结/Android/多线程/HandlerThread与IntentService(弃用).md",
@@ -192,24 +204,12 @@
     "技术总结/Java/JVM/Java 类加载.md",
     "技术总结/Java/JVM/静态变量和实例变量的区别.md",
     "技术总结/座舱开发/vim使用.md",
-    "技术总结/座舱开发/蓝牙.md",
-    "技术总结/座舱开发/重要资源.md",
-    "技术总结/座舱开发/座舱开发 Command Line.md",
-    "技术总结/Gradle/Dependency Management/Gradle依赖使用（grovvy & kts）.md",
-    "技术总结/Gradle/项目版本配置.md",
-    "技术总结/Gradle/Gradle Fundamentals.md",
-    "技术总结/Gradle/Android 打包流程.md",
-    "技术总结/Gradle/Gradle buildSrc 构建项目.md",
-    "技术总结/git/Gerrit 工作流程.md",
-    "技术总结/git/git代码提交规范.md",
-    "技术总结/Android/View组件/SwipeRefreshLayout.md",
     "技术总结/Android/性能优化/稳定性优化/静态代码分析在体验优化中的探索实践.pdf",
     "技术总结/Android/性能优化/网络优化思路/抖音网络优化实践.pdf",
     "技术总结/Android/性能优化/视频播放体验/抖音播放体验优化实践.pdf",
     "技术总结/Android/性能优化/启动速度优化/抖音启动优化实践-冯达.pdf",
     "技术总结/Android/性能优化/启动速度优化/抖音启动性能监控平台建设实践.pdf",
     "技术总结/Android/性能优化/内存优化思路/抖音内存优化实践.pdf",
-    "技术总结/Android/性能优化/流畅度优化/抖音Android流畅度优化实践.pdf",
     "技术总结/Pasted image 20250314221106.png",
     "技术总结/Pasted image 20250314220723.png",
     "技术总结/Pasted image 20250323202548.png",
