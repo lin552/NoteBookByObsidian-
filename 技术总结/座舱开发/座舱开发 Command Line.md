@@ -49,6 +49,9 @@ getprop sys.xiaopeng.vin
 # 酷狗杜比 AMP开关
 setprop persist.sys.xiaopeng.DOLBY 1 
 setprop persist.sys.xiaopeng.AMP 1
+
+# 使用工具打开后排屏
+D:\工具\scrcpy-win64-v1.25\scrcpy.exe --display 4
 ```
 
 #### 二、座舱调试码

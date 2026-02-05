@@ -34,7 +34,14 @@ git reset --hard HEAD@{1}
 # 6.推送到Gerrit
 git push origin HEAD:refs/for/6.0.0_xpdev
 ```
-#### 二、可配置内容
+#### 二、feature分支开发流程
+```bash
+# 1.切换到目标分支，比如main 或 develop
+git checkout main
+# 2.使用squash选项合并某个功能分支（如 feature-branch）
+git merge --squash feature-branch
+```
+#### 三、可配置内容
 - 设置git配置自动变基：
 ```bash
 # 设置pull时自动使用rebase
@@ -51,7 +58,7 @@ git config --global alias.sync '!git fetch origin && git rebase origin/6.0.0_xpd
 # 之后只需运行
 git sync
 ```
-#### 三、情况处理
+#### 四、情况处理
 - rebase时出现冲突
 ```bash
 # 查看冲突文件
