@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "技术总结/音视频开发/视频播放体验/Android播放体验优化.md",
+                "file": "技术总结/座舱开发/座舱开发 Command Line.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Android播放体验优化"
+              "title": "座舱开发 Command Line"
             }
           }
         ]
@@ -172,6 +172,11 @@
   },
   "active": "722152cd9534949f",
   "lastOpenFiles": [
+    "技术总结/音视频开发/蓝牙音乐/A2DP 与 AVRCP 总结.md",
+    "技术总结/音视频开发/蓝牙音乐/AVRCP.md",
+    "技术总结/音视频开发/蓝牙音乐/A2DP.md",
+    "技术总结/音视频开发/视频播放体验/Android播放体验优化.md",
+    "技术总结/音视频开发/蓝牙音乐",
     "技术总结/音视频开发/视频播放体验/播放器组件/ExoPlayer 优化.md",
     "技术总结/音视频开发/视频播放体验/播放器组件/ijkplayer 优化.md",
     "技术总结/音视频开发/视频播放体验/播放器组件/SurfaceView 与 TextureView.md",
@@ -185,7 +190,6 @@
     "技术总结/座舱开发/重要资源.md",
     "技术总结/座舱开发/vim使用.md",
     "技术总结/音视频开发/视频播放体验/抖音播放体验优化实践.pdf",
-    "技术总结/音视频开发/视频播放体验/Android播放体验优化.md",
     "技术总结/音视频开发/播放器架构/ExoPlayer vs IJKPlayer.md",
     "技术总结/音视频开发/播放器架构/ExoPlayer.md",
     "技术总结/音视频开发/播放器架构/IJKPlayer.md",
@@ -198,16 +202,12 @@
     "技术总结/Android/动画动效/页面过渡动画.md",
     "技术总结/Android/UI机制/Paint.md",
     "技术总结/Android/UI机制/Bitmap内存情况.md",
-    "技术总结/Android/UI机制/Bitmap.md",
-    "技术总结/Android/UI机制/Drawable.md",
-    "技术总结/Android/UI机制/自定义View.md",
     "技术总结/音视频开发/音视频解码",
     "技术总结/音视频开发",
     "技术总结/Android/动画动效",
     "技术总结/Android/性能优化/流畅度优化/抖音Android流畅度优化实践.pdf",
     "技术总结/Android/性能优化/启动速度优化/抖音启动优化实践-冯达.pdf",
     "技术总结/Android/性能优化/启动速度优化/抖音启动性能监控平台建设实践.pdf",
-    "com.tencent.qqmusic.modular 2.zip",
     "Java Error.png",
     "Pasted image 20251120100602.png",
     "技术总结/Pasted image 20250314221106.png",

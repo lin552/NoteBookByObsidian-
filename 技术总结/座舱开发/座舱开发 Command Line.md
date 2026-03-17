@@ -30,6 +30,14 @@ adb shell setprop debug.hwui.profile false
 # 启动Service
 adb shell am startservice -n com.xiaopeng.caraccount/com.xiaopeng.caraccount.login.LoginFlowService  -a "com.xiaopeng.xvs.account.ACTION_ACCOUNT_SHOW_DYNAMIC_DIALOG" --es type remove --es group_id group4 --ez display_state true
 
+# 修改挡位
+# GEAR_LEVEL_INVALID = 0
+# GEAR_LEVEL_D = 1
+# GEAR_LEVEL_N = 2
+# GEAR_LEVEL_R = 3
+# GEAR_LEVEL_P = 4
+ adb shell vdt rp VCU_CURRENT_GEARLEV 4
+
 # 2.系统命令
 
 # 查看应用进程
