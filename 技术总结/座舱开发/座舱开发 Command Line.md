@@ -19,6 +19,9 @@ adb shell settings put secure anr_show_background 1
 # 切换主题
 adb shell am broadcast -a com.xiaopeng.intent.action.SWITCH_DAYNIGHT
 
+# 切换语言
+adb shell am broadcast -a com.xiaopeng.intent.action.LANGUAGE_CHANGE
+
 # 开启点击反馈
 adb shell settings put system show_touches 1
 
